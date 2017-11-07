@@ -302,7 +302,7 @@ class TemplateModel(object):
         return op.join(self.dir_path, name + '.npy')
 
     def _read_array(self, name):
-        return read_array(self._get_array_path(name)).squeeze()
+        return read_array(self._get_array_path(name))
 
     def _write_array(self, name, arr):
         return write_array(self._get_array_path(name), arr)
