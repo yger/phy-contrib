@@ -15,6 +15,7 @@ from textwrap import dedent
 
 from setuptools import setup
 
+requires = ['numpy', 'vispy', 'traitlets', 'click', 'joblib']
 
 #------------------------------------------------------------------------------
 # Setup
@@ -54,6 +55,7 @@ setup(
         'phycontrib': ['*.npy', '*.gz', '*.txt', '*.json', '*.prb'],
     },
     include_package_data=True,
+    install_requires=requires,
     keywords='phy,data analysis,electrophysiology,neuroscience',
     classifiers=[
         'Development Status :: 4 - Beta',
