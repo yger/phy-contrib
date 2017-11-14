@@ -302,7 +302,7 @@ class TemplateModel(object):
         return op.join(self.dir_path, name + '.npy')
 
     def _read_array(self, name):
-        return read_array(self._get_array_path(name))
+        return read_array(self._get_array_path(name)).squeeze()
 
     def _write_array(self, name, arr):
         return write_array(self._get_array_path(name), arr)
@@ -398,6 +398,8 @@ class TemplateModel(object):
         # Sparse structure: regular array with col indices.
         try:
             data = self._read_array('templates')
+            if len(data.shape) ==  2:
+                data = data[:,:,None]
             assert data.ndim == 3
             assert data.dtype in (np.float32, np.float64)
             n_templates, n_samples, n_channels_loc = data.shape
@@ -440,7 +442,10 @@ class TemplateModel(object):
 
         # Sparse structure: regular array with row and col indices.
         try:
-            data = self._read_array('pc_features').transpose((0, 2, 1))
+            data = self._read_array('pc_features')
+            if len(data.shape) ==  2:
+                data = data[:,:,None]
+            data = data.transpose((0, 2, 1))
             assert data.ndim == 3
             assert data.dtype in (np.float32, np.float64)
             n_spikes, n_channels_loc, n_pcs = data.shape
@@ -449,6 +454,8 @@ class TemplateModel(object):
 
         try:
             cols = self._read_array('pc_feature_ind')
+            if len(cols.shape) ==  1:
+                cols = cols[:,None]
             assert cols.shape == (self.n_templates, n_channels_loc)
         except IOError:
             cols = None
